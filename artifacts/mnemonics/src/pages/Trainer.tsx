@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronLeft, ChevronRight, Timer, Brain, CheckCircle2, XCircle, ArrowLeft, ArrowRight } from "lucide-react";
+import { WordIllustration, hasIllustration } from "@/components/WordIllustration";
 import { motion, AnimatePresence } from "framer-motion";
 
 type TrainerState = "idle" | "memorize" | "recall" | "result";
@@ -216,6 +217,13 @@ export default function Trainer() {
                         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                           {pairIndex + 1}
                         </span>
+                        {hasIllustration(wordList[pairIndex]) && (
+                          <WordIllustration
+                            word={wordList[pairIndex]}
+                            size={72}
+                            className="text-foreground/70"
+                          />
+                        )}
                         <span className="text-2xl sm:text-3xl font-bold font-serif text-center leading-snug break-words w-full">
                           {wordList[pairIndex]}
                         </span>
@@ -232,6 +240,13 @@ export default function Trainer() {
                         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                           {pairIndex + 2}
                         </span>
+                        {hasIllustration(wordList[pairIndex + 1]) && (
+                          <WordIllustration
+                            word={wordList[pairIndex + 1]}
+                            size={72}
+                            className="text-primary/80"
+                          />
+                        )}
                         <span className="text-2xl sm:text-3xl font-bold font-serif text-center leading-snug break-words w-full">
                           {wordList[pairIndex + 1]}
                         </span>
