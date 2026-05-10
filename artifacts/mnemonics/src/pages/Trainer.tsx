@@ -209,29 +209,30 @@ export default function Trainer() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: slideDir === "right" ? -60 : 60 }}
                       transition={{ duration: 0.22, ease: "easeOut" }}
-                      className="w-full flex gap-4 justify-center"
+                      className="w-full flex flex-col sm:flex-row gap-4 justify-center"
                     >
                       {/* Word A */}
-                      <div className="flex-1 flex flex-col items-center gap-3 bg-muted/30 rounded-xl border p-6 min-w-0">
+                      <div className="flex-1 flex flex-col items-center gap-2 bg-muted/30 rounded-xl border p-5 min-w-0">
                         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                           {pairIndex + 1}
                         </span>
-                        <span className="text-3xl font-bold font-serif text-center leading-tight">
+                        <span className="text-2xl sm:text-3xl font-bold font-serif text-center leading-snug break-words w-full">
                           {wordList[pairIndex]}
                         </span>
                       </div>
 
-                      {/* Arrow between words */}
-                      <div className="flex items-center text-muted-foreground/40 shrink-0 pt-2">
-                        <ChevronRight className="h-8 w-8" />
+                      {/* Arrow between words — horizontal on desktop, vertical on mobile */}
+                      <div className="flex items-center justify-center text-muted-foreground/40 shrink-0">
+                        <ChevronRight className="hidden sm:block h-8 w-8" />
+                        <span className="sm:hidden text-2xl leading-none">↓</span>
                       </div>
 
                       {/* Word B */}
-                      <div className="flex-1 flex flex-col items-center gap-3 bg-primary/5 border-primary/20 rounded-xl border p-6 min-w-0">
+                      <div className="flex-1 flex flex-col items-center gap-2 bg-primary/5 border-primary/20 rounded-xl border p-5 min-w-0">
                         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                           {pairIndex + 2}
                         </span>
-                        <span className="text-3xl font-bold font-serif text-center leading-tight">
+                        <span className="text-2xl sm:text-3xl font-bold font-serif text-center leading-snug break-words w-full">
                           {wordList[pairIndex + 1]}
                         </span>
                       </div>
