@@ -3,20 +3,30 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Mnemonics training platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: lessons
+    description: Course lessons
+  - name: exercises
+    description: Exercise content
+  - name: sessions
+    description: Training sessions
+  - name: flashcards
+    description: Flashcard sets
+  - name: stats
+    description: User statistics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +34,183 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /lessons:
+    get:
+      operationId: getLessons
+      tags: [lessons]
+      summary: Get all lessons
+      responses:
+        "200":
+          description: List of lessons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lesson"
+
+  /lessons/{id}:
+    get:
+      operationId: getLesson
+      tags: [lessons]
+      summary: Get a lesson by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lesson detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonDetail"
+        "404":
+          description: Not found
+
+  /exercises:
+    get:
+      operationId: getExercises
+      tags: [exercises]
+      summary: Get exercises, optionally filtered by lesson
+      parameters:
+        - name: lessonId
+          in: query
+          required: false
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: List of exercises
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Exercise"
+
+  /exercises/{type}/content:
+    get:
+      operationId: getExerciseContent
+      tags: [exercises]
+      summary: Get content for a specific exercise type
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Exercise content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExerciseContent"
+        "404":
+          description: Not found
+
+  /sessions:
+    get:
+      operationId: getSessions
+      tags: [sessions]
+      summary: Get recent training sessions
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: ["integer", "null"]
+        - name: exerciseType
+          in: query
+          required: false
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Save a completed training session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionInput"
+      responses:
+        "201":
+          description: Session saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+
+  /stats/dashboard:
+    get:
+      operationId: getDashboardStats
+      tags: [stats]
+      summary: Get dashboard statistics
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /stats/progress:
+    get:
+      operationId: getProgressStats
+      tags: [stats]
+      summary: Get progress over time per exercise type
+      parameters:
+        - name: days
+          in: query
+          required: false
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: Progress data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProgressPoint"
+
+  /flashcards/{type}:
+    get:
+      operationId: getFlashcards
+      tags: [flashcards]
+      summary: Get flashcard set by type (bpc, as100, months, weekdays)
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Flashcard set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlashcardSet"
+        "404":
+          description: Not found
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +221,211 @@ components:
       required:
         - status
 
+    Lesson:
+      type: object
+      required: [id, number, title, description, totalExercises, topics]
+      properties:
+        id:
+          type: integer
+        number:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        totalExercises:
+          type: integer
+        topics:
+          type: array
+          items:
+            type: string
+
+    LessonDetail:
+      type: object
+      required: [id, number, title, description, theory, exercises, topics]
+      properties:
+        id:
+          type: integer
+        number:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        theory:
+          type: string
+        topics:
+          type: array
+          items:
+            type: string
+        exercises:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exercise"
+
+    Exercise:
+      type: object
+      required: [id, type, title, description, lessonId, difficulty]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        lessonId:
+          type: integer
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+
+    ExerciseContent:
+      type: object
+      required: [type, title, instructions]
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        instructions:
+          type: string
+        wordList:
+          type: ["array", "null"]
+          items:
+            type: string
+        numberList:
+          type: ["array", "null"]
+          items:
+            type: integer
+        pairs:
+          type: ["array", "null"]
+          items:
+            $ref: "#/components/schemas/Pair"
+
+    Pair:
+      type: object
+      required: [front, back]
+      properties:
+        front:
+          type: string
+        back:
+          type: string
+        hint:
+          type: ["string", "null"]
+
+    Session:
+      type: object
+      required: [id, exerciseType, exerciseTitle, itemsTotal, itemsCorrect, accuracy, durationSeconds, completedAt]
+      properties:
+        id:
+          type: integer
+        exerciseType:
+          type: string
+        exerciseTitle:
+          type: string
+        itemsTotal:
+          type: integer
+        itemsCorrect:
+          type: integer
+        accuracy:
+          type: number
+        durationSeconds:
+          type: integer
+        completedAt:
+          type: string
+          format: date-time
+
+    SessionInput:
+      type: object
+      required: [exerciseType, exerciseTitle, itemsTotal, itemsCorrect, durationSeconds]
+      properties:
+        exerciseType:
+          type: string
+        exerciseTitle:
+          type: string
+        itemsTotal:
+          type: integer
+        itemsCorrect:
+          type: integer
+        durationSeconds:
+          type: integer
+
+    DashboardStats:
+      type: object
+      required: [totalSessions, totalItemsPracticed, averageAccuracy, currentStreak, bestAccuracy, exerciseBreakdown, recentSessions]
+      properties:
+        totalSessions:
+          type: integer
+        totalItemsPracticed:
+          type: integer
+        averageAccuracy:
+          type: number
+        currentStreak:
+          type: integer
+        bestAccuracy:
+          type: number
+        exerciseBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExerciseBreakdown"
+        recentSessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Session"
+
+    ExerciseBreakdown:
+      type: object
+      required: [exerciseType, exerciseTitle, sessionCount, averageAccuracy]
+      properties:
+        exerciseType:
+          type: string
+        exerciseTitle:
+          type: string
+        sessionCount:
+          type: integer
+        averageAccuracy:
+          type: number
+
+    ProgressPoint:
+      type: object
+      required: [date, exerciseType, accuracy, itemsCorrect]
+      properties:
+        date:
+          type: string
+          format: date
+        exerciseType:
+          type: string
+        accuracy:
+          type: number
+        itemsCorrect:
+          type: integer
+
+    FlashcardSet:
+      type: object
+      required: [type, title, description, cards]
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/Flashcard"
+
+    Flashcard:
+      type: object
+      required: [front, back]
+      properties:
+        front:
+          type: string
+        back:
+          type: string
+        hint:
+          type: ["string", "null"]
+        imageCode:
+          type: ["string", "null"]
