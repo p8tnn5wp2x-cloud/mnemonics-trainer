@@ -41,18 +41,18 @@ export default function LessonDetail() {
       </div>
 
       <Tabs defaultValue="theory" className="w-full">
-        <TabsList className="w-full justify-start border-b rounded-none h-12 bg-transparent p-0 mb-8 space-x-6">
-          <TabsTrigger 
-            value="theory" 
-            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none h-12 px-0 font-medium"
+        <TabsList className="w-full grid grid-cols-2 gap-3 bg-transparent p-0 mb-8 h-auto">
+          <TabsTrigger
+            value="theory"
+            className="h-14 text-base font-semibold rounded-xl border border-primary/30 bg-transparent text-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:shadow-md transition-all"
           >
-            <BookOpen className="mr-2 h-4 w-4" /> Теория
+            <BookOpen className="mr-2 h-5 w-5" /> Теория
           </TabsTrigger>
-          <TabsTrigger 
+          <TabsTrigger
             value="exercises"
-            className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none h-12 px-0 font-medium"
+            className="h-14 text-base font-semibold rounded-xl border border-primary/30 bg-transparent text-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:shadow-md transition-all"
           >
-            <Dumbbell className="mr-2 h-4 w-4" /> Упражнения ({lesson.exercises.length})
+            <Dumbbell className="mr-2 h-5 w-5" /> Упражнения ({lesson.exercises.length})
           </TabsTrigger>
         </TabsList>
 
