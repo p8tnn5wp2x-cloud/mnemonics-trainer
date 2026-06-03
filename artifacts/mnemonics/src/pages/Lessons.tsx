@@ -52,8 +52,8 @@ export default function Lessons() {
               </CardContent>
               <CardFooter className="p-6 pt-0 mt-auto">
                 <Link href={`/lessons/${lesson.id}`} className="w-full">
-                  <Button className="w-full gap-2 group-hover:bg-primary/90">
-                    Перейти к уроку <ArrowRight className="h-4 w-4" />
+                  <Button className="w-full h-14 text-base font-semibold gap-2 rounded-xl group-hover:bg-primary/90">
+                    Перейти к уроку <ArrowRight className="h-5 w-5" />
                   </Button>
                 </Link>
               </CardFooter>
