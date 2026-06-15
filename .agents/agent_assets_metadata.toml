@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "jCTXDtdLp7AedL96d-5aI"
+uri = "file://deploy/DEPLOY.md"
+type = "text"
+title = "Инструкция по установке на VPS рег.ру"
