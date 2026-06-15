@@ -32,8 +32,8 @@ ssh root@ВАШ_IP_АДРЕС
 # Обновляем систему
 apt update && apt upgrade -y
 
-# Node.js 20 LTS
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+# Node.js 22 LTS
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt install -y nodejs
 
 # pnpm (менеджер пакетов проекта) и PM2 (держит сервер запущенным)
