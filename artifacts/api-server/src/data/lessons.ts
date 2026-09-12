@@ -1,3 +1,5 @@
+import { homeworkByLesson } from "./homework.generated";
+
 export interface ExerciseData {
   id: number;
   type: string;
@@ -18,7 +20,7 @@ export interface LessonData {
   exercises: ExerciseData[];
 }
 
-export const lessons: LessonData[] = [
+const lessonDefinitions: LessonData[] = [
   {
     id: 1,
     number: 1,
@@ -518,6 +520,11 @@ export const lessons: LessonData[] = [
     ],
   },
 ];
+
+export const lessons: LessonData[] = lessonDefinitions.map((lesson) => ({
+  ...lesson,
+  homework: homeworkByLesson[lesson.id] ?? lesson.homework,
+}));
 
 export const getAllExercises = (): ExerciseData[] =>
   lessons.flatMap((l) => l.exercises);
