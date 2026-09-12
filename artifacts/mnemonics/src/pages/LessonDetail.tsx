@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MarkdownContent } from "@/components/ui/markdown-content";
-import { ChevronLeft, Play, Dumbbell, BookOpen, Layers } from "lucide-react";
+import { ChevronLeft, Play, Dumbbell, BookOpen, Layers, House } from "lucide-react";
 
 export default function LessonDetail() {
   const { id } = useParams<{ id: string }>();
@@ -41,12 +41,18 @@ export default function LessonDetail() {
       </div>
 
       <Tabs defaultValue="theory" className="w-full">
-        <TabsList className="w-full grid grid-cols-2 gap-3 bg-transparent p-0 mb-8 h-auto">
+        <TabsList className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 bg-transparent p-0 mb-8 h-auto">
           <TabsTrigger
             value="theory"
             className="h-14 text-base font-semibold rounded-xl border border-primary/30 bg-transparent text-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:shadow-md transition-all"
           >
             <BookOpen className="mr-2 h-5 w-5" /> Теория
+          </TabsTrigger>
+          <TabsTrigger
+            value="homework"
+            className="h-14 text-base font-semibold rounded-xl border border-primary/30 bg-transparent text-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary data-[state=active]:shadow-md transition-all"
+          >
+            <House className="mr-2 h-5 w-5" /> Домашнее задание
           </TabsTrigger>
           <TabsTrigger
             value="exercises"
@@ -60,6 +66,14 @@ export default function LessonDetail() {
           <Card className="border-none shadow-md bg-card/50">
             <CardContent className="p-6 md:p-10">
               <MarkdownContent content={lesson.theory} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="homework" className="mt-0">
+          <Card className="border-none shadow-md bg-card/50">
+            <CardContent className="p-6 md:p-10">
+              <MarkdownContent content={lesson.homework} />
             </CardContent>
           </Card>
         </TabsContent>

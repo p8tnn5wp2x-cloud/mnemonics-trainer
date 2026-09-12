@@ -242,7 +242,7 @@ components:
 
     LessonDetail:
       type: object
-      required: [id, number, title, description, theory, exercises, topics]
+      required: [id, number, title, description, theory, homework, exercises, topics]
       properties:
         id:
           type: integer
@@ -253,6 +253,8 @@ components:
         description:
           type: string
         theory:
+          type: string
+        homework:
           type: string
         topics:
           type: array

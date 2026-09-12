@@ -40,6 +40,7 @@ export const GetLessonResponse = zod.object({
   title: zod.string(),
   description: zod.string(),
   theory: zod.string(),
+  homework: zod.string(),
   topics: zod.array(zod.string()),
   exercises: zod.array(
     zod.object({

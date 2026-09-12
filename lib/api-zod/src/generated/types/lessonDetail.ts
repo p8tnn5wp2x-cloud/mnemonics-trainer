@@ -13,6 +13,7 @@ export interface LessonDetail {
   title: string;
   description: string;
   theory: string;
+  homework: string;
   topics: string[];
   exercises: Exercise[];
 }
